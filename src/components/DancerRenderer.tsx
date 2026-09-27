@@ -1,42 +1,36 @@
 ﻿import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Matter from 'matter-js';
+import { View, Text } from 'react-native';
 
-export interface DancerRendererProps {
-  body: Matter.Body;
-  radius?: number;
-  color?: string;
-}
+export const DancerRenderer = ({ body, color, emoji }: any) => {
+  // Asumimos un tamaño de 40x40 para las bolas
+  const width = 40;
+  const height = 40;
+  const x = body.position.x - width / 2;
+  const y = body.position.y - height / 2;
+  const angle = body.angle;
 
-export const DancerRenderer = ({
-  body,
-  radius = 25,
-  color = '#b537f2',
-}: DancerRendererProps) => {
-  const { x, y } = body.position;
-
-  return React.createElement(View, {
-    style: [
-      styles.circle,
-      {
-        width: radius * 2,
-        height: radius * 2,
-        borderRadius: radius,
-        backgroundColor: color,
-        transform: [
-          { translateX: x - radius },
-          { translateY: y - radius },
-          { rotate: `${body.angle}rad` },
-        ],
-      },
-    ],
-  });
+  return React.createElement(
+    View,
+    {
+      style: {
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: width,
+        height: height,
+        backgroundColor: color || 'transparent',
+        borderRadius: width / 2,
+        transform: [{ rotate: `${angle}rad` }],
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#ffffff33'
+      }
+    },
+    React.createElement(
+      Text,
+      { style: { fontSize: 26 } },
+      emoji || '⚽'
+    )
+  );
 };
-
-const styles = StyleSheet.create({
-  circle: {
-    position: 'absolute',
-    borderWidth: 2,
-    borderColor: '#ffffff',
-  },
-});
